@@ -1,0 +1,26 @@
+{
+  "name": "DS28E18",
+  "keywords": "onewire, 1-wire, bus, sensor, i2c, spi",
+  "description": "Arduino Library for DS28E18 ICs translating 1-wire to I2C or SPI",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/port-net/DS28E18.git"
+  },
+  "authors": 
+  [
+    {
+      "name": "Christian Port",
+      "email": "devel@port-net.de",
+      "url": "",
+      "maintainer": true
+    }
+  ],
+  "dependencies":
+  {
+    "paulstoffregen/OneWire": "^2.3.5"
+  },
+  "version": "0.9.0",
+  "frameworks": "arduino",
+  "platforms": "*"
+}
