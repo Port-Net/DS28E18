@@ -36,30 +36,7 @@
 #define DS28E18ReadGPIOConfiguration  0x7C
 #define DS28E18DeviceStatus           0x7A
 
-// For readPowerSupply on oneWire bus
-// definition of nullptr for C++ < 11, using official workaround:
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2431.pdf
-#if __cplusplus < 201103L
-const class
-{
-public:
-	template <class T>
-	operator T *() const {
-		return 0;
-	}
-
-	template <class C, class T>
-	operator T C::*() const {
-		return 0;
-	}
-
-private:
-	void operator&() const;
-} nullptr = {};
-#endif
-
 typedef uint8_t DeviceAddress[8];
-
 
 class DS28E18Device {
 public:

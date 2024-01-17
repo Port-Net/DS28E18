@@ -1,3 +1,11 @@
+/*
+
+This example shows read of Honeywell Pressure sensor MPR series I2C.
+It start measurement and read result in one call so the system is blocked while measurement is taken.
+This takes about 10ms
+
+*/
+
 #include <Arduino.h>
 #include <OneWire.h>
 #include "DS28E18.h"
