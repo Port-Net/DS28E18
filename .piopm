@@ -1,1 +1,1 @@
-{"type": "library", "name": "DS28E18", "version": "0.9.0", "spec": {"owner": "cport", "id": 54, "name": "DS28E18", "requirements": null, "uri": null}}
+{"type": "library", "name": "DS28E18", "version": "0.9.0", "spec": {"owner": "cport", "id": 54, "name": "DS28E18", "requirements": "paulstoffregen/OneWire", "uri": "https://github.com/Port-Net/DS28E18.git"}}
