@@ -108,24 +108,42 @@ public:
 
 	// initialise bus
 	bool begin(void);
+
+  // returns the count of DS28E28 found on the bus
   uint8_t getDeviceCount(void);
+
+  // get status byte
   uint8_t getStatus(DeviceAddress addr);
   uint8_t getStatus(uint8_t index);
+
+  // get address by index (0..devicecount-1)
   bool getAddress(uint8_t* deviceAddress, uint8_t index);
+  
+  // load sequencer array to SRAM
   bool load_sequencer(DeviceAddress deviceAddress, uint8_t* sequence, uint16_t sequenceStart, uint16_t sequenceLen);
   bool load_sequencer(uint8_t index, uint8_t* sequence, uint16_t sequenceStart, uint16_t sequenceLen);
+  
+  // run sequencer
   bool run_sequencer(DeviceAddress deviceAddress, uint16_t sequenceStart, uint16_t sequenceLen, uint8_t waitTime);
   bool run_sequencer(uint8_t index, uint16_t sequenceStart, uint16_t sequenceLen, uint8_t waitTime);
+  
+  // read SRAM contens
   bool read_sequencer(DeviceAddress deviceAddress, uint16_t start, uint16_t len, uint8_t* result);
   bool read_sequencer(uint8_t index, uint16_t start, uint16_t len, uint8_t* result);
+  
+  // load sequence for Honeywell MPR I2C chip
   bool load_MPR_sequencer(DeviceAddress deviceAddress);
   bool load_MPR_sequencer(uint8_t index);
+
+  // execute sequence for Honeywell MPR I2C chip to measure pressure
   bool run_MPR_sequencer(DeviceAddress deviceAddress);
   bool run_MPR_sequencer(uint8_t index);
+
+  // read the result stored in SRAM MPR I2C has returned
   bool read_MPR_result(DeviceAddress deviceAddress, uint8_t &status, uint32_t &value);
   bool read_MPR_result(uint8_t index, uint8_t &status, uint32_t &value);
 
-  	// returns true if address is valid
+  // returns true if address is valid
 	bool validAddress(const uint8_t*);
 
 private:

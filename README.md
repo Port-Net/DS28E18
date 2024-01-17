@@ -20,6 +20,8 @@ Sequence is loaded with load_sequence(), executed with run_sequence() and result
 there is support for honeywell preasure sensor MPR series built in.
 functions are load_MPR_sequencer(), run_MPR_sequencer(), read_MPR_result()
 
+currently only tested on ESP32 with PSU connected (no strong pullup)
+
 # License
 
 This library is free software; you can redistribute it and/or
