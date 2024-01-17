@@ -522,7 +522,7 @@ bool DS28E18::read_sequencer(uint8_t index, uint16_t start, uint16_t len, uint8_
 
 }
 
-bool DS28E18::load_MPR_sequencer(DeviceAddress deviceAddress) {
+bool DS28E18::MPR_sensor_init(DeviceAddress deviceAddress) {
   uint8_t sequence[] = {  0x02, // start
                           0xE3, 0x04, 0x30, 0xaa, 0x00, 0x00, // write addr(18w) AA 00 00
                           0x03, // stop
@@ -535,24 +535,34 @@ bool DS28E18::load_MPR_sequencer(DeviceAddress deviceAddress) {
   return load_sequencer(deviceAddress, sequence, 0, sizeof(sequence));
 }
 
-bool DS28E18::load_MPR_sequencer(uint8_t index) {
+bool DS28E18::MPR_sensor_init(uint8_t index) {
   IDXCHECK
-  return load_MPR_sequencer(*(_devices.at(index)->getAddress()));
+  return MPR_sensor_init(*(_devices.at(index)->getAddress()));
 }
 
-bool DS28E18::run_MPR_sequencer(DeviceAddress deviceAddress) {
+bool DS28E18::MPR_sensor_measure(DeviceAddress deviceAddress) {
   activateExternalPullup();
-  bool ret = run_sequencer(deviceAddress, 0 ,21, 11);
+  bool ret = run_sequencer(deviceAddress, 0 ,8 , 220); // calculated 204 us
+  return ret;
+}
+
+bool DS28E18::MPR_sensor_measure(uint8_t index) {
+  IDXCHECK
+  return MPR_sensor_measure(*(_devices.at(index)->getAddress()));
+}
+
+bool DS28E18::MPR_sensor_read_result(DeviceAddress deviceAddress) {
+  bool ret = run_sequencer(deviceAddress, 10 ,11 , 260); // calculated 249 us
   deactivateExternalPullup();
   return ret;
 }
 
-bool DS28E18::run_MPR_sequencer(uint8_t index) {
+bool DS28E18::MPR_sensor_read_result(uint8_t index) {
   IDXCHECK
-  return run_MPR_sequencer(*(_devices.at(index)->getAddress()));
+  return MPR_sensor_read_result(*(_devices.at(index)->getAddress()));
 }
 
-bool DS28E18::read_MPR_result(DeviceAddress deviceAddress, uint8_t &status, uint32_t &value) {
+bool DS28E18::MPR_sensor_get_result(DeviceAddress deviceAddress, uint8_t &status, uint32_t &value) {
   uint8_t result[4];
   if(!read_sequencer(deviceAddress, 16, 4, result)) {
     return false;
@@ -563,9 +573,21 @@ bool DS28E18::read_MPR_result(DeviceAddress deviceAddress, uint8_t &status, uint
   return true;
 }
 
-bool DS28E18::read_MPR_result(uint8_t index, uint8_t &status, uint32_t &value) {
+bool DS28E18::MPR_sensor_get_result(uint8_t index, uint8_t &status, uint32_t &value) {
   IDXCHECK
-  return read_MPR_result(*(_devices.at(index)->getAddress()), status, value);
+  return MPR_sensor_get_result(*(_devices.at(index)->getAddress()), status, value);
+}
+
+bool DS28E18::MPR_sensor_measure_result(DeviceAddress deviceAddress, uint8_t &status, uint32_t &value) {
+  if(!run_sequencer(deviceAddress, 0 ,21, 11)) {
+    return false;
+  }
+  return MPR_sensor_get_result(deviceAddress, status, value);
+}
+
+bool DS28E18::MPR_sensor_measure_result(uint8_t index, uint8_t &status, uint32_t &value) {
+  IDXCHECK
+  return MPR_sensor_measure_result(*(_devices.at(index)->getAddress()), status, value);
 }
 
 void DS28E18::activateExternalPullup() {

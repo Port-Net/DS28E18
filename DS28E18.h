@@ -132,16 +132,25 @@ public:
   bool read_sequencer(uint8_t index, uint16_t start, uint16_t len, uint8_t* result);
   
   // load sequence for Honeywell MPR I2C chip
-  bool load_MPR_sequencer(DeviceAddress deviceAddress);
-  bool load_MPR_sequencer(uint8_t index);
+  bool MPR_sensor_init(DeviceAddress deviceAddress);
+  bool MPR_sensor_init(uint8_t index);
 
   // execute sequence for Honeywell MPR I2C chip to measure pressure
-  bool run_MPR_sequencer(DeviceAddress deviceAddress);
-  bool run_MPR_sequencer(uint8_t index);
+  bool MPR_sensor_measure(DeviceAddress deviceAddress);
+  bool MPR_sensor_measure(uint8_t index);
+
+  // execute sequence for Honeywell MPR I2C chip to read result
+  bool MPR_sensor_read_result(DeviceAddress deviceAddress, uint8_t &status, uint32_t &value);
+  bool MPR_sensor_read_result(uint8_t index, uint8_t &status, uint32_t &value);
 
   // read the result stored in SRAM MPR I2C has returned
-  bool read_MPR_result(DeviceAddress deviceAddress, uint8_t &status, uint32_t &value);
-  bool read_MPR_result(uint8_t index, uint8_t &status, uint32_t &value);
+  bool MPR_sensor_get_result(DeviceAddress deviceAddress, uint8_t &status, uint32_t &value);
+  bool MPR_sensor_get_result(uint8_t index, uint8_t &status, uint32_t &value);
+
+  // execute sequence for Honeywell MPR I2C chip to measure pressure wait and get result
+  // takes aprox. 10ms
+  bool MPR_sensor_measure_result(DeviceAddress deviceAddress, uint8_t &status, uint32_t &value);
+  bool MPR_sensor_measure_result(uint8_t index, uint8_t &status, uint32_t &value);
 
   // returns true if address is valid
 	bool validAddress(const uint8_t*);
