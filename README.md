@@ -10,7 +10,7 @@ Please include OneWire from Paul Stoffregen in the library manager before you be
 The structure has been derived from
 https://github.com/milesburton/Arduino-Temperature-Control-Library developt by Miles Burton <miles@mnetcs.com> 
 
-# basic function
+# Basic function
 
 on begin() the lib checks if thehe are DS28E18 on the bus that need to get initialized.
 after initializing status is read to clear PowerOnReset flag.
