@@ -20,7 +20,7 @@
   {
     "paulstoffregen/OneWire": "^2.3.5"
   },
-  "version": "0.9.0",
+  "version": "0.9.1",
   "frameworks": "arduino",
   "platforms": "*"
 }

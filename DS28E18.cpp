@@ -107,7 +107,7 @@ bool DS28E18Device::load_sequencer(uint8_t* sequence, uint16_t sequenceStart, ui
   return true;
 }
 
-bool DS28E18Device::run_sequencer(uint16_t sequenceStart, uint16_t sequenceLen, uint8_t waitTime) {
+bool DS28E18Device::run_sequencer(uint16_t sequenceStart, uint16_t sequenceLen, uint32_t waitTime) {
   if(!_sequenceLoaded) {
     Serial.println("Sequence not loaded");
     return false;
@@ -193,13 +193,13 @@ uint8_t DS28E18Device::getResultByte() {
   return _lastResultByte;
 }
 
-bool DS28E18Device::write_cmd(uint8_t* cmd, uint8_t cmdLen, uint8_t* result, uint8_t* resultLen, uint8_t waitTime) {
+bool DS28E18Device::write_cmd(uint8_t* cmd, uint8_t cmdLen, uint8_t* result, uint8_t* resultLen, uint32_t waitTime) {
   _wire->reset();
   _wire->select(_deviceAddress);
   return write_cmd_(cmd, cmdLen, result, resultLen, waitTime);
 }
 
-bool DS28E18Device::write_cmd_(uint8_t* cmd, uint8_t cmdLen, uint8_t* result, uint8_t* resultLen, uint8_t waitTime) {
+bool DS28E18Device::write_cmd_(uint8_t* cmd, uint8_t cmdLen, uint8_t* result, uint8_t* resultLen, uint32_t waitTime) {
   uint8_t cmd_buf[cmdLen + 2];
   cmd_buf[0] = DS28E18CommandCode;
   cmd_buf[1] = cmdLen;
@@ -220,10 +220,11 @@ bool DS28E18Device::write_cmd_(uint8_t* cmd, uint8_t cmdLen, uint8_t* result, ui
   //  Serial.println("crc match");
   }
   _wire->write(0xAA);
-  delay(waitTime);
+  delayMicroseconds(max(1000U, waitTime));
   _wire->read(); // dummy read
   uint8_t rec_len = _wire->read(); // length
   if(rec_len == 0xFF) {
+    Serial.println("cmd no Result");
     return false;
   }
   uint8_t rec[1 + rec_len]; // len + result
@@ -497,14 +498,14 @@ bool DS28E18::load_sequencer(uint8_t index, uint8_t* sequence, uint16_t sequence
   return _devices.at(index)->load_sequencer(sequence, sequenceStart, sequenceLen);
 }
 
-bool DS28E18::run_sequencer(DeviceAddress deviceAddress, uint16_t sequenceStart, uint16_t sequenceLen, uint8_t waitTime) {
+bool DS28E18::run_sequencer(DeviceAddress deviceAddress, uint16_t sequenceStart, uint16_t sequenceLen, uint32_t waitTime) {
   if(DS28E18Device* d = getDevByAddress(deviceAddress)) {
     return d->run_sequencer(sequenceStart, sequenceLen, waitTime);
   }
   return false;
 }
 
-bool DS28E18::run_sequencer(uint8_t index, uint16_t sequenceStart, uint16_t sequenceLen, uint8_t waitTime) {
+bool DS28E18::run_sequencer(uint8_t index, uint16_t sequenceStart, uint16_t sequenceLen, uint32_t waitTime) {
   IDXCHECK
   return _devices.at(index)->run_sequencer(sequenceStart, sequenceLen, waitTime);
 }
@@ -579,7 +580,7 @@ bool DS28E18::MPR_sensor_get_result(uint8_t index, uint8_t &status, uint32_t &va
 }
 
 bool DS28E18::MPR_sensor_measure_result(DeviceAddress deviceAddress, uint8_t &status, uint32_t &value) {
-  if(!run_sequencer(deviceAddress, 0 ,21, 11)) {
+  if(!run_sequencer(deviceAddress, 0 ,21, 10000)) {
     return false;
   }
   return MPR_sensor_get_result(deviceAddress, status, value);

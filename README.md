@@ -17,8 +17,8 @@ after initializing status is read to clear PowerOnReset flag.
 to use the IC you have to provide a sequence of I2C or SPI commands and load them into the SRAM. This has to be done every time after power loss. please refer to datasheet at https://www.analog.com/en/products/ds28e18.html
 Sequence is loaded with load_sequence(), executed with run_sequence() and results are fetched with read_sequence().
 
-there is support for honeywell preasure sensor MPR series built in.
-functions are load_MPR_sequencer(), run_MPR_sequencer(), read_MPR_result()
+There is support for honeywell preasure sensor MPR series built in.
+Functions are MPR_sensor_init(), MPR_sensor_measure_result()
 
 currently only tested on ESP32 with PSU connected (no strong pullup)
 

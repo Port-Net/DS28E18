@@ -77,7 +77,7 @@ public:
   bool hasAddress(DeviceAddress deviceAddress);
   uint16_t getStatus(void);
   bool load_sequencer(uint8_t* sequence, uint16_t sequenceStart, uint16_t sequenceLen);
-  bool run_sequencer(uint16_t sequenceStart, uint16_t sequenceLen, uint8_t waitTime);
+  bool run_sequencer(uint16_t sequenceStart, uint16_t sequenceLen, uint32_t waitTime);
   bool read_sequencer(uint16_t start, uint16_t len, uint8_t* result);
   uint16_t getNackAddr(void);
   uint8_t getError(void);
@@ -85,8 +85,8 @@ public:
   int16_t getExecutionTime(uint8_t* sequence, uint16_t sequenceLen);
 
 private:
-  bool write_cmd(uint8_t* cmd, uint8_t cmdLen, uint8_t* result = NULL, uint8_t* resultLen = NULL, uint8_t waitTime = 1);
-  bool write_cmd_(uint8_t* cmd, uint8_t cmdLen, uint8_t* result = NULL, uint8_t* resultLen = NULL, uint8_t waitTime = 1);
+  bool write_cmd(uint8_t* cmd, uint8_t cmdLen, uint8_t* result = NULL, uint8_t* resultLen = NULL, uint32_t waitTime = 1000);
+  bool write_cmd_(uint8_t* cmd, uint8_t cmdLen, uint8_t* result = NULL, uint8_t* resultLen = NULL, uint32_t waitTime = 1000);
   
   OneWire* _wire;
   DeviceAddress _deviceAddress;
@@ -124,8 +124,8 @@ public:
   bool load_sequencer(uint8_t index, uint8_t* sequence, uint16_t sequenceStart, uint16_t sequenceLen);
   
   // run sequencer
-  bool run_sequencer(DeviceAddress deviceAddress, uint16_t sequenceStart, uint16_t sequenceLen, uint8_t waitTime);
-  bool run_sequencer(uint8_t index, uint16_t sequenceStart, uint16_t sequenceLen, uint8_t waitTime);
+  bool run_sequencer(DeviceAddress deviceAddress, uint16_t sequenceStart, uint16_t sequenceLen, uint32_t waitTime);
+  bool run_sequencer(uint8_t index, uint16_t sequenceStart, uint16_t sequenceLen, uint32_t waitTime);
   
   // read SRAM contens
   bool read_sequencer(DeviceAddress deviceAddress, uint16_t start, uint16_t len, uint8_t* result);
@@ -140,8 +140,8 @@ public:
   bool MPR_sensor_measure(uint8_t index);
 
   // execute sequence for Honeywell MPR I2C chip to read result
-  bool MPR_sensor_read_result(DeviceAddress deviceAddress, uint8_t &status, uint32_t &value);
-  bool MPR_sensor_read_result(uint8_t index, uint8_t &status, uint32_t &value);
+  bool MPR_sensor_read_result(DeviceAddress deviceAddress);
+  bool MPR_sensor_read_result(uint8_t index);
 
   // read the result stored in SRAM MPR I2C has returned
   bool MPR_sensor_get_result(DeviceAddress deviceAddress, uint8_t &status, uint32_t &value);
