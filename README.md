@@ -12,13 +12,15 @@ https://github.com/milesburton/Arduino-Temperature-Control-Library developt by M
 
 # Basic function
 
-on begin() the lib checks if thehe are DS28E18 on the bus that need to get initialized.
-after initializing status is read to clear PowerOnReset flag.
-to use the IC you have to provide a sequence of I2C or SPI commands and load them into the SRAM. This has to be done every time after power loss. please refer to datasheet at https://www.analog.com/en/products/ds28e18.html
+on begin() the lib checks if there are DS28E18 on the bus that need to get initialized.
+After initializing status is read to clear PowerOnReset flag.
+- to use the IC you have to provide a sequence of I2C or SPI commands and load them into the SRAM. This has to be done every time after power loss.
+- Please refer to datasheet at https://www.analog.com/en/products/ds28e18.html
 Sequence is loaded with load_sequence(), executed with run_sequence() and results are fetched with read_sequence().
 
-There is support for honeywell preasure sensor MPR series built in.
-Functions are MPR_sensor_init(), MPR_sensor_measure_result()
+There is support for honeywell preasure sensor MPR series built in. Functions are:
+- MPR_sensor_init()
+- MPR_sensor_measure_result()
 
 currently only tested on ESP32 with PSU connected (no strong pullup)
 
